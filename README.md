@@ -1,4 +1,4 @@
-oche autonomo (Inteligencia Artificial)
+Coche autonomo (Inteligencia Artificial)
 
 ## Introduction
 
