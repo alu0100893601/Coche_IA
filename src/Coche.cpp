@@ -10,18 +10,27 @@ Coche :: Coche (void) :
   simbolo_coche_('C'),
   i_(0),
   j_(0),
-  personas_recogidas_(0)
+  personas_recogidas_(0),
+  inicio_(),
+  fin_(),
+  path_()
 
 {}
 
 //////////////////////////////////////////////////
 
-Coche :: Coche (const Coche& car) {
+Coche :: Coche (const Coche& car) :
+
+  path_(car.path_)
+
+{
 
   simbolo_coche_ = car.simbolo_coche_;
   i_ = car.i_;
   j_ = car.j_;
   personas_recogidas_ = car.personas_recogidas_;
+  inicio_ = car.inicio_;
+  fin_ = car.fin_;
 
 }
 
@@ -52,15 +61,21 @@ int Coche :: getJ (void) const{
 //////////////////////////////////////////////////////
 // Número de persona recogidas
 
-void Coche :: setPRecogidas (void) {
+void Coche :: setPRecogidas (int val) {
 
-  this->personas_recogidas_ = this->personas_recogidas_ + 1;
+  this->personas_recogidas_ = this->personas_recogidas_ + val;
 
 }
 
 int Coche :: getPRecogidas (void) const{
 
   return this->personas_recogidas_;
+
+}
+
+void Coche :: resetPRecogidas (void) {
+
+  this->personas_recogidas_ = 0;
 
 }
 
@@ -74,6 +89,48 @@ void Coche :: setPos (int i, int j) {
 
 }
 
+void Coche :: setInicio (posicion x) {
+
+  this->inicio_.i = x.i;
+  this->inicio_.j = x.j;
+
+}
+
+void Coche :: setFin (posicion x) {
+
+  this->fin_.i = x.i;
+  this->fin_.j = x.j;
+
+}
+
+/////////////////////////////////////////////////////
+// Funcion para hallar el camino por el A*
+
+void Coche :: calcularCamino (std::vector<std::vector<char> > mapa, posicion ini, posicion fini, int heure) {
+
+  this->path_.limpiar();
+  this->path_.calculo(mapa, ini, fini, heure);
+
+  std::cout << "\n\tPRESIONE RETORNO DE CARRO PARA SIMULAR EL CAMINO";
+
+}
+
+/////////////////////////////////////////////////////
+
+std::vector<int> Coche :: getMovements (void) const{
+
+  return this->path_.getMovimientos();
+
+}
+
+/////////////////////////////////////////////////////
+
+int Coche :: getTotalGenerado () const{
+
+  return this->path_.getNnodos();
+
+}
+
 /////////////////////////////////////////////////////
 // Funcion para mover el COCHE
 // 0 = arriba
@@ -81,15 +138,13 @@ void Coche :: setPos (int i, int j) {
 // 2 = izq
 // 3 = drch
 
-void Coche :: mover (std::vector<std::vector<char> >& mapa) {
-
-  srand(time(NULL));
+void Coche :: mover (std::vector<std::vector<char> >& mapa, int direccion) {
 
   bool completed = false;
 
   do {
 
-    int mov = rand() % 4;
+    int mov = direccion;
 
     switch (mov) {
 
@@ -101,7 +156,7 @@ void Coche :: mover (std::vector<std::vector<char> >& mapa) {
 
             if (mapa[this->getI()-1][this->getJ()] == 'P') {
 
-              this->setPRecogidas();
+              this->setPRecogidas(1);
 
               mapa[this->getI()-1][this->getJ()] = 'C';
               mapa[this->getI()][this->getJ()] = ' ';
@@ -137,7 +192,7 @@ void Coche :: mover (std::vector<std::vector<char> >& mapa) {
 
             if (mapa[this->getI()+1][this->getJ()] == 'P') {
 
-              this->setPRecogidas();
+              this->setPRecogidas(1);
 
               mapa[this->getI()+1][this->getJ()] = 'C';
               mapa[this->getI()][this->getJ()] = ' ';
@@ -173,7 +228,7 @@ void Coche :: mover (std::vector<std::vector<char> >& mapa) {
 
             if (mapa[this->getI()][this->getJ()-1] == 'P') {
 
-              this->setPRecogidas();
+              this->setPRecogidas(1);
 
               mapa[this->getI()][this->getJ()-1] = 'C';
               mapa[this->getI()][this->getJ()] = ' ';
@@ -209,7 +264,7 @@ void Coche :: mover (std::vector<std::vector<char> >& mapa) {
 
             if (mapa[this->getI()][this->getJ()+1] == 'P') {
 
-              this->setPRecogidas();
+              this->setPRecogidas(1);
 
               mapa[this->getI()][this->getJ()+1] = 'C';
               mapa[this->getI()][this->getJ()] = ' ';
