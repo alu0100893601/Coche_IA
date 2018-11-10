@@ -6,7 +6,11 @@
 ///////////////////////////////////////////
 // Constructor por defecto
 
-Tablero :: Tablero (void) {}
+Tablero :: Tablero (void) :
+
+  por_obs_(0.0)
+
+{}
 
 ///////////////////////////////////////////
 // Constructor por parametros
@@ -38,6 +42,7 @@ Tablero :: Tablero (const Tablero& board) :
   pasajeros_ = board.pasajeros_;
   pos_inicial_coche_ = board.pos_inicial_coche_;
   pos_final_coche_ = board.pos_final_coche_;
+  por_obs_ = board.por_obs_;
 
 }
 
@@ -79,6 +84,12 @@ Coche Tablero :: getCoche (void) const {
 
 }
 
+float Tablero :: getPorObs (void) const{
+
+  return (this->por_obs_);
+
+}
+
 ///////////////////////////////////////////////
 //Funciones para establecer las rows and col
 
@@ -98,6 +109,12 @@ void Tablero :: setCol (int m) {
 void Tablero :: setPosTab (int i, int j, char x) {
 
   this->mapa_[i][j] = x;
+
+}
+
+void Tablero :: setPorObs (float per) {
+
+  this->por_obs_ = per;
 
 }
 
@@ -182,9 +199,9 @@ void Tablero :: colocarCoche (void) {
 
           correcto = true;
 
-          std::cout << "\n\tCoordenada inicial i [0, " << this->getRow() << "]: ";
+          std::cout << "\n\tCoordenada inicial i [0, " << this->getRow()-1 << "]: ";
           std::cin >> i; std::cin.get();
-          std::cout << "\tCoordenada inicial j [0, " << this->getCol() << "]: ";
+          std::cout << "\tCoordenada inicial j [0, " << this->getCol()-1 << "]: ";
           std::cin >> j; std::cin.get();
 
           if ( (i < 0) || (i > this->getRow()) || (j < 0) || (j > this->getCol()) ) {
@@ -205,9 +222,9 @@ void Tablero :: colocarCoche (void) {
 
           correcto = true;
 
-          std::cout << "\n\tCoordenada final i [0, " << this->getRow() << "]: ";
+          std::cout << "\n\tCoordenada final i [0, " << this->getRow()-1 << "]: ";
           std::cin >> i; std::cin.get();
-          std::cout << "\tCoordenada final j [0, " << this->getCol() << "]: ";
+          std::cout << "\tCoordenada final j [0, " << this->getCol()-1 << "]: ";
           std::cin >> j; std::cin.get();
 
           if ( (i < 0) || (i > this->getRow()) || (j < 0) || (j > this->getCol()) ) {
@@ -240,6 +257,13 @@ void Tablero :: colocarCoche (void) {
 
         this->setPosTab(i, j, this->car_.getSimb());
 
+        srand(time(NULL)*i);
+
+        i = rand() % this->getRow();
+        j = rand() % this->getCol();
+
+        this->setPosFinal(i, j);
+
         break;
       }
 
@@ -263,12 +287,18 @@ void Tablero :: setPosInicial (int posi, int posj){
   this->pos_inicial_coche_.i = posi;
   this->pos_inicial_coche_.j = posj;
 
+  this->car_.setInicio(pos_inicial_coche_);
+
 }
 
 void Tablero :: setPosFinal (int posi, int posj){
 
   this->pos_final_coche_.i = posi;
   this->pos_final_coche_.j = posj;
+
+  this->setPosTab(posi, posj, 'X');
+
+  this->car_.setFin(pos_final_coche_);
 
 }
 
@@ -298,7 +328,9 @@ void Tablero :: rellenarObstaculos (void) {
 
     std::cout << "\n\tEstablecido el no. de obstaculos al 0,05 del tablero";
 
-    int n_obs = ((this->getRow()*this->getCol()) * 0.05);
+    this->setPorObs(0.05);
+
+    int n_obs = ((this->getRow()*this->getCol()) * this->getPorObs());
 
     std::cout << " (" << n_obs << " obstaculos)\n";
     std::cout << "\t¿Desea introducir los OBSTACULOS de forma Manual o Aleatoria? (m/a): ";
@@ -446,9 +478,9 @@ void Tablero :: rellenarPersonas (void) {
 
   do {
 
-    std::cout << "\n\tEstablecido el no. de pasajeros a 10";
+    std::cout << "\n\tEstablecido el no. de pasajeros a 5";
 
-    int n_pas = 10;
+    int n_pas = 5;
 
     std::cout << "\n\t¿Desea introducir los PASAJEROS de forma Manual o Aleatoria? (m/a): ";
     std::cin >> option; std::cin.get();
@@ -535,12 +567,21 @@ void Tablero :: rellenarPersonas (void) {
 
 }
 
+//////////////////////////////////////////////////////
+// Funcion para calcular el Camino
+
+void Tablero :: hallarCamino (int heure) {
+
+  this->car_.calcularCamino(this->mapa_, this->pos_inicial_coche_, this->pos_final_coche_, heure);
+
+}
+
 /////////////////////////////////////////////////////
 //Funcion para mover el COCHE
 
-void Tablero :: moverCoche (void) {
+void Tablero :: moverCoche (int direccion) {
 
-  this->car_.mover(this->mapa_);
+  this->car_.mover(this->mapa_, direccion);
 
 }
 
@@ -616,8 +657,7 @@ std::ostream& operator<< (std::ostream& os, const Tablero& map){
   os << std::endl;
 
   os << "\n\tInicio: [" << map.getPosInicial().i << ", " << map.getPosInicial().j << "]";
-  os << "\n\tFinal: [" << map.getPosFinal().i << ", " << map.getPosFinal().j << "]";
-  os << "\n\tPersonas recogidas: " << map.getCoche().getPRecogidas();
+  os << " -- Final: [" << map.getPosFinal().i << ", " << map.getPosFinal().j << "]";
 
   return os;
 

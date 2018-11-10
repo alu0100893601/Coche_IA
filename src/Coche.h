@@ -9,6 +9,7 @@
 #include <cstdlib>
 #include <time.h>
 #include <iostream>
+#include "Camino.h"
 
 ////////////////////////////////////////////
 
@@ -21,6 +22,11 @@ private:
   int j_;
   int personas_recogidas_;
 
+  posicion inicio_;
+  posicion fin_;
+
+  Camino path_;
+
 public:
 
   Coche();
@@ -30,13 +36,20 @@ public:
   char getSimb () const;
   int getI () const;
   int getJ () const;
-  
   int getPRecogidas () const;
-  void setPRecogidas ();
+  std::vector<int> getMovements () const;
+  int getTotalGenerado () const;
 
   void setPos (int, int);
+  void setInicio (posicion);
+  void setFin (posicion);
+  void setPRecogidas (int);
 
-  void mover (std::vector<std::vector<char> >&);
+  void resetPRecogidas ();
+
+  void calcularCamino (std::vector<std::vector<char> >, posicion, posicion, int);
+
+  void mover (std::vector<std::vector<char> >&, int);
 
   //Algoritmos
 

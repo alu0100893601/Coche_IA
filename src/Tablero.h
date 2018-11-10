@@ -22,13 +22,6 @@ struct pasajeros{
 
 };
 
-struct posicion{
-
-  int i;
-  int j;
-
-};
-
 ///////////////////////////////////////////
 
 class Tablero {
@@ -40,6 +33,8 @@ private:
   std::vector<pasajeros> pasajeros_;
   posicion pos_inicial_coche_;
   posicion pos_final_coche_;
+
+  float por_obs_;
 
 public:
 
@@ -56,7 +51,7 @@ public:
 
   void setPosInicial (int, int);
   void setPosFinal (int, int);
-  
+
   posicion getPosInicial () const;
   posicion getPosFinal () const;
 
@@ -65,12 +60,16 @@ public:
   char getSimbTab (int, int) const;
   std::vector<pasajeros> getVPasajeros () const;
   Coche getCoche () const;
+  float getPorObs () const;
 
   void setRow (int);
   void setCol (int);
   void setPosTab (int, int, char);
+  void setPorObs (float);
 
-  void moverCoche (void);
+  void hallarCamino (int);
+
+  void moverCoche (int);
 
   friend std::ostream& operator<< (std::ostream&, const Tablero&);
 
