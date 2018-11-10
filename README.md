@@ -2,7 +2,7 @@ Coche autonomo (Inteligencia Artificial)
 
 ## Introduction
 
-> Author: Sergio Delgado Lopez<br/>EMail: sergio.delglo@gmail.com <br/>Date: 07/11/2018 <br/>Practica de Busquedas (Inteligencia Artificial)
+> Author: Sergio Delgado Lopez<br/>EMail: sergio.delglo@gmail.com <br/>Date: 07/11/2018 <br/>Practica de Busquedas - 2 funciones heuristicas (Inteligencia Artificial)
 
 ## Code Samples
 
