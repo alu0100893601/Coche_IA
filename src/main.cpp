@@ -32,8 +32,6 @@ int main(int argc, char const *argv[]) {
   std::cout << "\n\tSituacion inicial en el mapa:" << '\n';
   std::cout << map << '\n';
 
-
-
   map.hallarCamino(1); //Distancia euclidea
   std::cin.get();
 

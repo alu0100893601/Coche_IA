@@ -328,7 +328,7 @@ void Tablero :: rellenarObstaculos (void) {
 
     std::cout << "\n\tEstablecido el no. de obstaculos al 0,05 del tablero";
 
-    this->setPorObs(0.05);
+    this->setPorObs(0.1);
 
     int n_obs = ((this->getRow()*this->getCol()) * this->getPorObs());
 
