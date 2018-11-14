@@ -159,7 +159,7 @@ void Coche :: mover (std::vector<std::vector<char> >& mapa, int direccion) {
               this->setPRecogidas(1);
 
               mapa[this->getI()-1][this->getJ()] = 'C';
-              mapa[this->getI()][this->getJ()] = ' ';
+              mapa[this->getI()][this->getJ()] = '+';
 
               this->setPos(this->getI()-1, this->getJ());
 
@@ -169,7 +169,7 @@ void Coche :: mover (std::vector<std::vector<char> >& mapa, int direccion) {
             else {
 
               mapa[this->getI()-1][this->getJ()] = 'C';
-              mapa[this->getI()][this->getJ()] = ' ';
+              mapa[this->getI()][this->getJ()] = '+';
 
               this->setPos(this->getI()-1, this->getJ());
 
@@ -195,7 +195,7 @@ void Coche :: mover (std::vector<std::vector<char> >& mapa, int direccion) {
               this->setPRecogidas(1);
 
               mapa[this->getI()+1][this->getJ()] = 'C';
-              mapa[this->getI()][this->getJ()] = ' ';
+              mapa[this->getI()][this->getJ()] = '+';
 
               this->setPos(this->getI()+1, this->getJ());
 
@@ -205,7 +205,7 @@ void Coche :: mover (std::vector<std::vector<char> >& mapa, int direccion) {
             else {
 
               mapa[this->getI()+1][this->getJ()] = 'C';
-              mapa[this->getI()][this->getJ()] = ' ';
+              mapa[this->getI()][this->getJ()] = '+';
 
               this->setPos(this->getI()+1, this->getJ());
 
@@ -231,7 +231,7 @@ void Coche :: mover (std::vector<std::vector<char> >& mapa, int direccion) {
               this->setPRecogidas(1);
 
               mapa[this->getI()][this->getJ()-1] = 'C';
-              mapa[this->getI()][this->getJ()] = ' ';
+              mapa[this->getI()][this->getJ()] = '+';
 
               this->setPos(this->getI(), this->getJ()-1);
 
@@ -241,7 +241,7 @@ void Coche :: mover (std::vector<std::vector<char> >& mapa, int direccion) {
             else {
 
               mapa[this->getI()][this->getJ()-1] = 'C';
-              mapa[this->getI()][this->getJ()] = ' ';
+              mapa[this->getI()][this->getJ()] = '+';
 
               this->setPos(this->getI(), this->getJ()-1);
 
@@ -267,7 +267,7 @@ void Coche :: mover (std::vector<std::vector<char> >& mapa, int direccion) {
               this->setPRecogidas(1);
 
               mapa[this->getI()][this->getJ()+1] = 'C';
-              mapa[this->getI()][this->getJ()] = ' ';
+              mapa[this->getI()][this->getJ()] = '+';
 
               this->setPos(this->getI(), this->getJ()+1);
 
@@ -277,7 +277,7 @@ void Coche :: mover (std::vector<std::vector<char> >& mapa, int direccion) {
             else {
 
               mapa[this->getI()][this->getJ()+1] = 'C';
-              mapa[this->getI()][this->getJ()] = ' ';
+              mapa[this->getI()][this->getJ()] = '+';
 
               this->setPos(this->getI(), this->getJ()+1);
 

@@ -326,9 +326,9 @@ void Tablero :: rellenarObstaculos (void) {
 
   do {
 
-    std::cout << "\n\tEstablecido el no. de obstaculos al 0,05 del tablero";
+    std::cout << "\n\tEstablecido el no. de obstaculos al 0,3 del tablero";
 
-    this->setPorObs(0.1);
+    this->setPorObs(0.3);
 
     int n_obs = ((this->getRow()*this->getCol()) * this->getPorObs());
 
@@ -627,6 +627,13 @@ std::ostream& operator<< (std::ostream& os, const Tablero& map){
         case 'C':{
 
           os << "\033[0;93m" << map.getSimbTab(i,j) <<"\033[0m";
+
+          break;
+        }
+
+        case '+':{
+
+          os << "\033[0;97m" << map.getSimbTab(i,j) <<"\033[0m";
 
           break;
         }

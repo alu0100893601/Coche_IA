@@ -88,9 +88,7 @@ Nodo Camino :: evaluarFrontera (posicion fini) {
 
     if (this->evaluacion_[i].getEleg() == false) {
 
-      this->evaluacion_[i].setG(this->evaluacion_[i].getCoste() + this->evaluacion_[i].getH());
-
-      if (aux > this->evaluacion_[i].getG()) {
+      if (aux >= this->evaluacion_[i].getG()) {
 
         aux = this->evaluacion_[i].getG();
         inx = i;
@@ -102,7 +100,8 @@ Nodo Camino :: evaluarFrontera (posicion fini) {
   }
 
   this->evaluacion_[inx].setEleg(true);
-  return this->evaluacion_[inx];
+  Nodo aux_n(this->evaluacion_[inx]);
+  return aux_n;
 
 }
 
@@ -121,14 +120,25 @@ void Camino :: calculo (std::vector<std::vector<char> > mapa, posicion ini, posi
     int cost_aux = 0;
     Nodo x1;
     Nodo chosen;
+    x1.limpiar();
+    chosen.limpiar();
     bool parar = false;
+    std::vector<Nodo> vector_elegidos;
 
     x1.setCoste(0);
     x1.setPos(ini);
     x1.setPosPadre(ini);
     x1.setEleg(true);
 
+    if (heure == 1)
+      this->establecerH_1(fini, x1);
+    if (heure == 2)
+      this->establecerH_2(fini, x1);
+
+    x1.setG(x1.getCoste() + x1.getH());
+
     this->evaluacion_.push_back(x1);
+    vector_elegidos.push_back(x1);
     x1.limpiar();
 
     if ((pos_actual.i-1 >= 0) && ((mapa[pos_actual.i-1][pos_actual.j] == ' ') || (mapa[pos_actual.i-1][pos_actual.j] == 'P') || (mapa[pos_actual.i-1][pos_actual.j] == 'X'))) {
@@ -141,13 +151,24 @@ void Camino :: calculo (std::vector<std::vector<char> > mapa, posicion ini, posi
         x1.setMov(0); //Arriba
         x1.setPos(aux);
         x1.setPosPadre(this->evaluacion_[0].getPos());
+        x1.setEleg(false);
 
         if (heure == 1)
           this->establecerH_1(fini, x1);
         if (heure == 2)
           this->establecerH_2(fini, x1);
 
-        this->evaluacion_.push_back(x1);
+        x1.setG(x1.getCoste() + x1.getH());
+
+        int k = 0;
+        bool meter = true;
+        while (k<this->evaluacion_.size()) {
+          if(this->evaluacion_[k] == x1)
+            meter = false;
+          k++;
+        }
+        if (meter)
+          this->evaluacion_.push_back(x1);
         x1.limpiar();
 
     }
@@ -162,13 +183,24 @@ void Camino :: calculo (std::vector<std::vector<char> > mapa, posicion ini, posi
         x1.setMov(1); //Abajo
         x1.setPos(aux);
         x1.setPosPadre(this->evaluacion_[0].getPos());
+        x1.setEleg(false);
 
         if (heure == 1)
           this->establecerH_1(fini, x1);
         if (heure == 2)
           this->establecerH_2(fini, x1);
 
-        this->evaluacion_.push_back(x1);
+        x1.setG(x1.getCoste() + x1.getH());
+
+        int k = 0;
+        bool meter = true;
+        while (k<this->evaluacion_.size()) {
+          if(this->evaluacion_[k] == x1)
+            meter = false;
+          k++;
+        }
+        if (meter)
+          this->evaluacion_.push_back(x1);
         x1.limpiar();
 
     }
@@ -183,13 +215,24 @@ void Camino :: calculo (std::vector<std::vector<char> > mapa, posicion ini, posi
         x1.setMov(2); //Izquierda
         x1.setPos(aux);
         x1.setPosPadre(this->evaluacion_[0].getPos());
+        x1.setEleg(false);
 
         if (heure == 1)
           this->establecerH_1(fini, x1);
         if (heure == 2)
           this->establecerH_2(fini, x1);
 
-        this->evaluacion_.push_back(x1);
+        x1.setG(x1.getCoste() + x1.getH());
+
+        int k = 0;
+        bool meter = true;
+        while (k<this->evaluacion_.size()) {
+          if(this->evaluacion_[k] == x1)
+            meter = false;
+          k++;
+        }
+        if (meter)
+          this->evaluacion_.push_back(x1);
         x1.limpiar();
 
     }
@@ -204,18 +247,31 @@ void Camino :: calculo (std::vector<std::vector<char> > mapa, posicion ini, posi
         x1.setMov(3); //Derecha
         x1.setPos(aux);
         x1.setPosPadre(this->evaluacion_[0].getPos());
+        x1.setEleg(false);
 
         if (heure == 1)
           this->establecerH_1(fini, x1);
         if (heure == 2)
           this->establecerH_2(fini, x1);
 
-        this->evaluacion_.push_back(x1);
+        x1.setG(x1.getCoste() + x1.getH());
+
+        int k = 0;
+        bool meter = true;
+        while (k<this->evaluacion_.size()) {
+          if(this->evaluacion_[k] == x1)
+            meter = false;
+          k++;
+        }
+        if (meter)
+          this->evaluacion_.push_back(x1);
         x1.limpiar();
 
     }
 
+    chosen.limpiar();
     chosen = this->evaluarFrontera(fini);
+    vector_elegidos.push_back(chosen);
 
     pos_actual.i = chosen.getPos().i;
     pos_actual.j = chosen.getPos().j;
@@ -232,7 +288,7 @@ void Camino :: calculo (std::vector<std::vector<char> > mapa, posicion ini, posi
 
       if ((pos_actual.i-1 >= 0) && ((mapa[pos_actual.i-1][pos_actual.j] == ' ') || (mapa[pos_actual.i-1][pos_actual.j] == 'P') || (mapa[pos_actual.i-1][pos_actual.j] == 'X'))) {
 
-        if ((pos_actual.i-1 != chosen.getPosPadre().i) && (pos_actual.j != chosen.getPosPadre().j)) {
+        if (!((pos_actual.i-1 == chosen.getPosPadre().i) && (pos_actual.j == chosen.getPosPadre().j))) {
 
           aux.i = pos_actual.i-1;
           aux.j = pos_actual.j;
@@ -242,13 +298,24 @@ void Camino :: calculo (std::vector<std::vector<char> > mapa, posicion ini, posi
           x1.setMov(0); //Arriba
           x1.setPos(aux);
           x1.setPosPadre(chosen.getPos());
+          x1.setEleg(false);
 
           if (heure == 1)
             this->establecerH_1(fini, x1);
           if (heure == 2)
             this->establecerH_2(fini, x1);
 
-          this->evaluacion_.push_back(x1);
+          x1.setG(x1.getCoste() + x1.getH());
+
+          int k = 0;
+          bool meter = true;
+          while (k<this->evaluacion_.size()) {
+            if(this->evaluacion_[k] == x1)
+              meter = false;
+            k++;
+          }
+          if (meter)
+            this->evaluacion_.push_back(x1);
           x1.limpiar();
 
         }
@@ -257,7 +324,7 @@ void Camino :: calculo (std::vector<std::vector<char> > mapa, posicion ini, posi
 
       if ((pos_actual.i+1 < mapa.size()) && ((mapa[pos_actual.i+1][pos_actual.j] == ' ') || (mapa[pos_actual.i+1][pos_actual.j] == 'P') || (mapa[pos_actual.i+1][pos_actual.j] == 'X'))) {
 
-        if ((pos_actual.i+1 != chosen.getPosPadre().i) && (pos_actual.j != chosen.getPosPadre().j)) {
+        if (!((pos_actual.i+1 == chosen.getPosPadre().i) && (pos_actual.j == chosen.getPosPadre().j))) {
 
           aux.i = pos_actual.i+1;
           aux.j = pos_actual.j;
@@ -267,13 +334,24 @@ void Camino :: calculo (std::vector<std::vector<char> > mapa, posicion ini, posi
           x1.setMov(1); //Abajo
           x1.setPos(aux);
           x1.setPosPadre(chosen.getPos());
+          x1.setEleg(false);
 
           if (heure == 1)
             this->establecerH_1(fini, x1);
           if (heure == 2)
             this->establecerH_2(fini, x1);
 
-          this->evaluacion_.push_back(x1);
+          x1.setG(x1.getCoste() + x1.getH());
+
+          int k = 0;
+          bool meter = true;
+          while (k<this->evaluacion_.size()) {
+            if(this->evaluacion_[k] == x1)
+              meter = false;
+            k++;
+          }
+          if (meter)
+            this->evaluacion_.push_back(x1);
           x1.limpiar();
 
         }
@@ -282,7 +360,7 @@ void Camino :: calculo (std::vector<std::vector<char> > mapa, posicion ini, posi
 
       if ((pos_actual.j-1 >= 0) && ((mapa[pos_actual.i][pos_actual.j-1] == ' ') || (mapa[pos_actual.i][pos_actual.j-1] == 'P') || (mapa[pos_actual.i][pos_actual.j-1] == 'X'))) {
 
-        if ((pos_actual.i != chosen.getPosPadre().i) && (pos_actual.j-1 != chosen.getPosPadre().j)) {
+        if (!((pos_actual.i == chosen.getPosPadre().i) && (pos_actual.j-1 == chosen.getPosPadre().j))) {
 
           aux.i = pos_actual.i;
           aux.j = pos_actual.j-1;
@@ -292,13 +370,24 @@ void Camino :: calculo (std::vector<std::vector<char> > mapa, posicion ini, posi
           x1.setMov(2); //Izquierda
           x1.setPos(aux);
           x1.setPosPadre(chosen.getPos());
+          x1.setEleg(false);
 
           if (heure == 1)
             this->establecerH_1(fini, x1);
           if (heure == 2)
             this->establecerH_2(fini, x1);
 
-          this->evaluacion_.push_back(x1);
+          x1.setG(x1.getCoste() + x1.getH());
+
+          int k = 0;
+          bool meter = true;
+          while (k<this->evaluacion_.size()) {
+            if(this->evaluacion_[k] == x1)
+              meter = false;
+            k++;
+          }
+          if (meter)
+            this->evaluacion_.push_back(x1);
           x1.limpiar();
 
         }
@@ -307,7 +396,7 @@ void Camino :: calculo (std::vector<std::vector<char> > mapa, posicion ini, posi
 
       if ((pos_actual.j+1 < mapa[0].size()) && ((mapa[pos_actual.i][pos_actual.j+1] == ' ') || (mapa[pos_actual.i][pos_actual.j+1] == 'P') || (mapa[pos_actual.i][pos_actual.j+1] == 'X'))) {
 
-        if ((pos_actual.i != chosen.getPosPadre().i) && (pos_actual.j+1 != chosen.getPosPadre().j)) {
+        if (!((pos_actual.i == chosen.getPosPadre().i) && (pos_actual.j+1 == chosen.getPosPadre().j))) {
 
           aux.i = pos_actual.i;
           aux.j = pos_actual.j+1;
@@ -317,20 +406,33 @@ void Camino :: calculo (std::vector<std::vector<char> > mapa, posicion ini, posi
           x1.setMov(3); //Derecha
           x1.setPos(aux);
           x1.setPosPadre(chosen.getPos());
+          x1.setEleg(false);
 
           if (heure == 1)
             this->establecerH_1(fini, x1);
           if (heure == 2)
             this->establecerH_2(fini, x1);
 
-          this->evaluacion_.push_back(x1);
+          x1.setG(x1.getCoste() + x1.getH());
+
+          int k = 0;
+          bool meter = true;
+          while (k<this->evaluacion_.size()) {
+            if(this->evaluacion_[k] == x1)
+              meter = false;
+            k++;
+          }
+          if (meter)
+            this->evaluacion_.push_back(x1);
           x1.limpiar();
 
         }
 
       }
 
+      chosen.limpiar();
       chosen = this->evaluarFrontera(fini);
+      vector_elegidos.push_back(chosen);
 
       pos_actual.i = chosen.getPos().i;
       pos_actual.j = chosen.getPos().j;
@@ -345,50 +447,32 @@ void Camino :: calculo (std::vector<std::vector<char> > mapa, posicion ini, posi
 
     }
 
-    // En este bloque es donde obtenemos el camino final que debe seguir el coche
-
-    int end = this->evaluacion_.size()-1;
+    int end = vector_elegidos.size()-1;
+    this->camino_final_.push_back(vector_elegidos.back());
     bool finalizado = false;
-    bool find = false;
-    std::vector<Nodo> vec_aux;
-    vec_aux.push_back(this->evaluacion_.back());
 
     while (!finalizado) {
 
-      find = false;
+      for (int i = end; i>=0; i--) {
 
-      for (int i = end; find == false; i--) {
-
-        if (this->evaluacion_[i].getEleg()) {
-
-          if ((vec_aux.back().getPosPadre().i == this->evaluacion_[i].getPos().i) && (vec_aux.back().getPosPadre().j == this->evaluacion_[i].getPos().j)) {
-
-            find = true;
-            end = i;
-            vec_aux.push_back(this->evaluacion_[i]);
-
-          }
-
+        if ((vector_elegidos[i].getPos().i == this->camino_final_.back().getPosPadre().i) && (vector_elegidos[i].getPos().j == this->camino_final_.back().getPosPadre().j)) {
+          this->camino_final_.push_back(vector_elegidos[i]);
+          end = i;
         }
-
       }
 
-      if ((ini.i == vec_aux.back().getPos().i) && (ini.j == vec_aux.back().getPos().j))
+      if (end == 0)
         finalizado = true;
-
     }
 
-    std::cout << "\n\tNodo finales ordenados:" << '\n';
-    for (int i = vec_aux.size()-1; 0 <= i; i--) {
+    // std::cout << "\n\tNodo finales ordenados:" << '\n';
+    for (int i = this->camino_final_.size()-1; i>=0 ; i--) {
 
-      std::cout << "\t> " << vec_aux[i];
-      this->camino_final_.push_back(vec_aux[i]);
-
-    }
-
-    for (size_t i = 0; i < this->camino_final_.size(); i++) {
+      //std::cout << "\t> " << this->camino_final_[i];
       this->movimientos_.push_back(this->camino_final_[i].getMov());
+
     }
+
 
 
   }

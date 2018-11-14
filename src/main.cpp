@@ -20,7 +20,7 @@ int main(int argc, char const *argv[]) {
 
   std::cout << "\x1B[2J\x1B[H";
 
-  Tablero map(10, 10);
+  Tablero map(30, 140);
   map.redimensionar();
 
   map.colocarCoche();
@@ -39,12 +39,16 @@ int main(int argc, char const *argv[]) {
 
     map.moverCoche(map.getCoche().getMovements()[i]);
     std::cout << "\x1B[2J\x1B[H";
-    std::cout << map << '\n';
-    delay(DELAY);
+    // std::cout << map << '\n';
+    // delay(DELAY);
 
   }
 
+  std::cout << map << '\n';
+
   std::cout << "\n\t\e[4m+ Memoria - heuristica distancia euclidea +\e[0m\n";
+  std::cout << "\n\tInicio: [" << map.getPosInicial().i << ", " << map.getPosInicial().j << "]\n";
+  std::cout << " -- Final: [" << map.getPosFinal().i << ", " << map.getPosFinal().j << "]";
   std::cout << "\tDimension: " << map.getRow() << " x " << map.getCol() << '\n';
   std::cout << "\tObstaculos: " << map.getPorObs()*100 << "%\n";
   std::cout << "\tNodos generados: " << map.getCoche().getTotalGenerado() << '\n';
@@ -66,12 +70,16 @@ int main(int argc, char const *argv[]) {
 
     map2.moverCoche(map2.getCoche().getMovements()[i]);
     std::cout << "\x1B[2J\x1B[H";
-    std::cout << map2 << '\n';
-    delay(DELAY);
+    //std::cout << map2 << '\n';
+    //delay(DELAY);
 
   }
 
+  std::cout << map2 << '\n';
+
   std::cout << "\n\t\e[4m+ Memoria - heuristica distancia rectilinea +\e[0m\n";
+  std::cout << "\n\tInicio: [" << map2.getPosInicial().i << ", " << map2.getPosInicial().j << "]";
+  std::cout << " -- Final: [" << map2.getPosFinal().i << ", " << map2.getPosFinal().j << "]\n";
   std::cout << "\tDimension: " << map2.getRow() << " x " << map2.getCol() << '\n';
   std::cout << "\tObstaculos: " << map2.getPorObs()*100 << "%\n";
   std::cout << "\tNodos generados: " << map2.getCoche().getTotalGenerado() << '\n';

@@ -195,8 +195,9 @@ bool Nodo :: operator== (const Nodo& aux) const {
 std::ostream& operator<< (std::ostream& os, const Nodo& nodito) {
 
   os << "Nodo: [" << nodito.getPos().i << ", " << nodito.getPos().j << "]";
-  os << " con " << nodito.getCoste() << " + " << nodito.getH() << " = " << nodito.getG();
-  os << " -> Nodo padre: [" << nodito.getPosPadre().i << ", " << nodito.getPosPadre().j << "]\n";
+  //os << " con " << nodito.getCoste() << " + " << nodito.getH() << " = " << nodito.getG();
+  //os << " -> Nodo padre: [" << nodito.getPosPadre().i << ", " << nodito.getPosPadre().j << "]\n";
+  os << " -> movi: " << nodito.getMov() << '\n';
 
   return os;
 
