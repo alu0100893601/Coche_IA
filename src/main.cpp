@@ -60,7 +60,7 @@ int main(int argc, char const *argv[]) {
   map.getCoche().resetPRecogidas();
 
   std::cout << "\x1B[2J\x1B[H";
-  std::cout << "\n\tSituacion inicial en el mapa:" << '\n';
+  std::cout << "\n\tSituación inicial en el mapa:" << '\n';
   std::cout << map2 << '\n';
 
   map2.hallarCamino(2); //Distancia rectilinia
