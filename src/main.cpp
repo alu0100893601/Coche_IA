@@ -29,7 +29,7 @@ int main(int argc, char const *argv[]) {
 
   Tablero map2(map);
 
-  std::cout << "\n\tSituacion inicial en el mapa:" << '\n';
+  std::cout << "\n\tSituacion inicial en el mapa (para distancia EUCLIDEA):" << '\n';
   std::cout << map << '\n';
 
   map.hallarCamino(1); //Distancia euclidea
@@ -47,8 +47,8 @@ int main(int argc, char const *argv[]) {
   std::cout << map << '\n';
 
   std::cout << "\n\t\e[4m+ Memoria - heuristica distancia euclidea +\e[0m\n";
-  std::cout << "\n\tInicio: [" << map.getPosInicial().i << ", " << map.getPosInicial().j << "]\n";
-  std::cout << " -- Final: [" << map.getPosFinal().i << ", " << map.getPosFinal().j << "]";
+  std::cout << "\n\tInicio: [" << map.getPosInicial().i << ", " << map.getPosInicial().j << "]";
+  std::cout << " -- Final: [" << map.getPosFinal().i << ", " << map.getPosFinal().j << "]\n";
   std::cout << "\tDimension: " << map.getRow() << " x " << map.getCol() << '\n';
   std::cout << "\tObstaculos: " << map.getPorObs()*100 << "%\n";
   std::cout << "\tNodos generados: " << map.getCoche().getTotalGenerado() << '\n';
@@ -60,7 +60,7 @@ int main(int argc, char const *argv[]) {
   map.getCoche().resetPRecogidas();
 
   std::cout << "\x1B[2J\x1B[H";
-  std::cout << "\n\tSituación inicial en el mapa:" << '\n';
+  std::cout << "\n\tSituación inicial en el mapa (para distancia RECTILINEA):" << '\n';
   std::cout << map2 << '\n';
 
   map2.hallarCamino(2); //Distancia rectilinia
